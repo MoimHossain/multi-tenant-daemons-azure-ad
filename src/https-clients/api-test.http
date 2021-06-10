@@ -1,0 +1,24 @@
+@host = login.microsoftonline.com
+@tenant = XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
+@contentType = application/x-www-form-urlencoded
+@clientID = XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
+@targetScopeAppID = XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
+@encodedScope = api%3A%2F%2F{{targetScopeAppID}}%2F.default
+@clientSecret = ************
+#@apihost = localhost:5001
+#@apihost = azure-app.azurewebsites.net
+@apihost = api-management.azure-api.net
+
+
+
+# @name getToken
+POST https://{{host}}/{{tenant}}/oauth2/v2.0/token HTTP/1.1
+content-type: {{contentType}}
+
+client_id={{clientID}}&scope={{encodedScope}}&client_secret={{clientSecret}}&grant_type=client_credentials
+
+
+###
+GET https://{{apihost}}/
+Authorization: {{getToken.response.body.token_type}} {{getToken.response.body.access_token}}
+Ocp-Apim-Subscription-Key: XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
